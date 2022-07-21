@@ -9,6 +9,7 @@ class Ball:
     def update(self):
         self._subposition += self.speed
         self.position = self._subposition >> 3
+        # handle bounces
         if self.position >= self.lane_size:
             self.position = self.lane_size - 1
             self._subposition = self.position << 3
@@ -24,9 +25,12 @@ class Ball:
             self.speed = speed
 
     def render(self, buf):
-        if self.speed == 0:
-            buf.set_pixel(self.position, self.lane_coordinate, (255, 0, 0))
+        spd = self.speed
+        lc = self.lane_coordinate
+        pos = self.position
+        if spd == 0:
+            buf.set_pixel(pos, lc, (255, 0, 0))
             return
-        direction = -self.speed // abs(self.speed)
+        direction = -spd // abs(spd)
         for i in range(4):
-            buf.set_pixel(self.position + i*direction, self.lane_coordinate, (255 >> i, 0, 0))
+            buf.set_pixel(pos + i*direction, lc, (255 >> i, 0, 0))
