@@ -15,9 +15,11 @@ class Ball:
             self.position = self.lane_size - 1
             self._subposition = self.position << 3
             self.speed *= -1
+            return self.position
         if self.position < 0:
             self.position = 0
             self.speed *= -1
+            return self.position
 
     def move(self, pos, speed=None):
         self.position = pos
@@ -37,5 +39,5 @@ class Ball:
             return
         direction = -spd // abs(spd)
         for y in range(self.width):
-            for i in range(4):
+            for i in range(3):
                 sp(pos + i*direction, lc+y, (255 >> i, 0, 0))

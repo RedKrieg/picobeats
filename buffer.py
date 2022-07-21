@@ -1,6 +1,10 @@
 import picounicorn
 import gc
 
+# Tried to use bytearray for the buffer instead of a list of strings
+# but I found that it was considerably slower due to the conversion
+# from memoryview instance to three ints for colors
+
 class Buffer:
     def __init__(self, width=None, height=None):
         self.width = width or picounicorn.get_width()

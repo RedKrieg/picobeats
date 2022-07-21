@@ -2,6 +2,7 @@ import ball
 import bat
 import buffer
 import chirp
+import scoreboard
 import picounicorn
 import time
 
@@ -9,7 +10,6 @@ target_fps = 60
 
 ticks_per_frame = 1000 // target_fps # rough, but err faster than slower
 
-print("init")
 picounicorn.init()
 
 # we have 4 voices on pio 4-7 tied to gpio 2-5
@@ -37,6 +37,8 @@ bats = [
     bat.Bat(buttons[3], balls[1], voices[3], width - 1, lanes[1], width=2)
     ]
 
+sb = scoreboard.ScoreBoard(0, width - 1, width, height)
+
 while True:
     start = time.ticks_ms()
 
@@ -44,14 +46,18 @@ while True:
     for bt in bats:
         bt.update()
     for bl in balls:
-        bl.update()
+        point=bl.update()
+        if point is not None:
+            sb.update(point)
 
     # start rendering
     buf.clear()
+    sb.render(buf)
     for bt in bats:
         bt.render(buf)
     for bl in balls:
         bl.render(buf)
+
     # write to led array
     buf.render()
 
