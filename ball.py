@@ -1,9 +1,10 @@
 class Ball:
-    def __init__(self, lane_size, lane_coordinate, position=0, speed=1, max_speed=8):
+    def __init__(self, lane_size, lane_coordinate, position=0, speed=1, max_speed=8, width=1):
         self.lane_size = lane_size
         self.lane_coordinate = lane_coordinate
         self.position = position
         self.speed = speed
+        self.width = width
         self._subposition = position << 3
 
     def update(self):
@@ -25,12 +26,16 @@ class Ball:
             self.speed = speed
 
     def render(self, buf):
+        # reduce lookups inside loops
         spd = self.speed
         lc = self.lane_coordinate
         pos = self.position
+        sp = buf.set_pixel
         if spd == 0:
-            buf.set_pixel(pos, lc, (255, 0, 0))
+            for y in range(self.width):
+                sp(pos, lc+y, (255, 0, 0))
             return
         direction = -spd // abs(spd)
-        for i in range(4):
-            buf.set_pixel(pos + i*direction, lc, (255 >> i, 0, 0))
+        for y in range(self.width):
+            for i in range(4):
+                sp(pos + i*direction, lc+y, (255 >> i, 0, 0))

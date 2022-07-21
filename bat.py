@@ -1,13 +1,14 @@
 import picounicorn
 
 class Bat:
-    def __init__(self, button, ball, voice, location_x, location_y, max_len=6):
+    def __init__(self, button, ball, voice, location_x, location_y, max_len=6, width=1):
         """
             [button] is a picounicorn button ID
             [ball] is an instance of ball.Ball
             [voice] is an instance of chirp.Chirper
             [location_x] and [location_y] are screen coordinates of the first pixel
             [max_len] is the maximum length of the bat
+            [width] is the width of the bat
         """
         self.max_len = max_len
         self.length = 0
@@ -16,6 +17,7 @@ class Bat:
         self.voice = voice
         self.location_x = location_x
         self.location_y = location_y
+        self.width = width
         self.direction = 1 if location_x == 0 else -1
         self.color = (63, 127, 63)
         self.holding = False
@@ -59,5 +61,13 @@ class Bat:
 
     def render(self, buf):
         """Render the bat"""
-        for i in range(self.location_x, self.location_x + self.length * self.direction, self.direction):
-            buf.set_pixel(i, self.location_y, self.color)
+        # reduce lookups inside loops
+        sp = buf.set_pixel
+        ln = self.length
+        lx = self.location_x
+        ly = self.location_y
+        dr = self.direction
+        col = self.color
+        for y in range(self.width):
+            for i in range(lx, lx + ln * dr, dr):
+                buf.set_pixel(i, ly+y, col)

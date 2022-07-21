@@ -23,18 +23,18 @@ height = picounicorn.get_height()
 buf = buffer.Buffer(width, height)
 
 # y coordinates of the lanes we use
-lanes = [1, 5]
+lanes = [1, 4]
 
 balls = [
-    ball.Ball(width, lanes[0]),
-    ball.Ball(width, lanes[1], position=width - 1)
+    ball.Ball(width, lanes[0], width=2),
+    ball.Ball(width, lanes[1], position=width - 1, width=2)
     ]
 
 bats = [
-    bat.Bat(buttons[0], balls[0], voices[0], 0, lanes[0]),
-    bat.Bat(buttons[2], balls[0], voices[1], width - 1, lanes[0]),
-    bat.Bat(buttons[1], balls[1], voices[2], 0, lanes[1]),
-    bat.Bat(buttons[3], balls[1], voices[3], width - 1, lanes[1])
+    bat.Bat(buttons[0], balls[0], voices[0], 0, lanes[0], width=2),
+    bat.Bat(buttons[2], balls[0], voices[1], width - 1, lanes[0], width=2),
+    bat.Bat(buttons[1], balls[1], voices[2], 0, lanes[1], width=2),
+    bat.Bat(buttons[3], balls[1], voices[3], width - 1, lanes[1], width=2)
     ]
 
 while True:
