@@ -1,5 +1,6 @@
 import ball
 import bat
+import buffer
 import chirp
 import picounicorn
 import time
@@ -18,6 +19,10 @@ buttons = [ picounicorn.BUTTON_A, picounicorn.BUTTON_B, picounicorn.BUTTON_X, pi
 width = picounicorn.get_width()
 height = picounicorn.get_height()
 
+# render to a buffer so the leds don't flicker
+buf = buffer.Buffer(width, height)
+
+# y coordinates of the lanes we use
 lanes = [1, 5]
 
 balls = [
@@ -32,11 +37,6 @@ bats = [
     bat.Bat(buttons[3], balls[1], voices[3], width - 1, lanes[1])
     ]
 
-def clear_leds(color=(0, 0, 0)):
-    for x in range(picounicorn.get_width()):
-        for y in range(picounicorn.get_height()):
-            picounicorn.set_pixel(x, y, *color)
-
 while True:
     start = time.ticks_ms()
 
@@ -47,12 +47,16 @@ while True:
         bl.update()
 
     # start rendering
-    clear_leds()
+    buf.clear()
     for bt in bats:
-        bt.render()
+        bt.render(buf)
     for bl in balls:
-        bl.render()
+        bl.render(buf)
+    # write to led array
+    buf.render()
 
     # wait for next frame
     end = time.ticks_ms()
-    time.sleep_ms(ticks_per_frame + time.ticks_diff(start, end))
+    wait_for = ticks_per_frame + time.ticks_diff(start, end)
+    print(wait_for)
+    time.sleep_ms(wait_for)

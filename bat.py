@@ -50,14 +50,14 @@ class Bat:
             if self.holding:
                 self.ball.speed = (self.max_len - self.length + 1) * self.direction
                 self.holding = False
-                self.voice.play(50*self.max_len//abs(self.ball.speed))
+                self.voice.play(25*self.max_len//abs(self.ball.speed))
                 self.length -= 1
                 return True
             if self.length > 0:
                 self.length -= 1
         return False
 
-    def render(self):
+    def render(self, buf):
         """Render the bat"""
         for i in range(self.location_x, self.location_x + self.length * self.direction, self.direction):
-            picounicorn.set_pixel(i, self.location_y, *self.color)
+            buf.set_pixel(i, self.location_y, self.color)

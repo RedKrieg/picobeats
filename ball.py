@@ -1,5 +1,3 @@
-import picounicorn
-
 class Ball:
     def __init__(self, lane_size, lane_coordinate, position=0, speed=1, max_speed=8):
         self.lane_size = lane_size
@@ -25,14 +23,10 @@ class Ball:
         if speed is not None:
             self.speed = speed
 
-    def set_pixel(self, x, y, r, g, b):
-        if x >= 0 and x < self.lane_size:
-            picounicorn.set_pixel(x, y, r, g, b)
-
-    def render(self):
+    def render(self, buf):
         if self.speed == 0:
-            self.set_pixel(self.position, self.lane_coordinate, 255, 0, 0)
+            buf.set_pixel(self.position, self.lane_coordinate, (255, 0, 0))
             return
         direction = -self.speed // abs(self.speed)
         for i in range(4):
-            self.set_pixel(self.position + i*direction, self.lane_coordinate, 255 >> i, 0, 0)
+            buf.set_pixel(self.position + i*direction, self.lane_coordinate, (255 >> i, 0, 0))
