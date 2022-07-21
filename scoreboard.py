@@ -12,10 +12,9 @@ class ScoreBoard:
     def update(self, player):
         if player:
             self.score += 1
-            self.render_flash.append(self.width-1)
         else:
             self.score -= 1
-            self.render_flash.append(0)
+        self.render_flash.append(player)
         if self.score == -1 or self.score == self.width-1:
             # reset score for now
             self.score = self.width//2 - 1
