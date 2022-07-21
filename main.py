@@ -39,6 +39,8 @@ bats = [
 
 sb = scoreboard.ScoreBoard(0, width - 1, width, height)
 
+winner = None
+
 while True:
     start = time.ticks_ms()
 
@@ -48,7 +50,10 @@ while True:
     for bl in balls:
         point=bl.update()
         if point is not None:
-            sb.update(point)
+            winner = sb.update(point)
+            if winner is not None:
+                # debug, probably need to reset ball/bat states here
+                print(f"Player at {winner} wins.")
 
     # start rendering
     buf.clear()
@@ -60,6 +65,14 @@ while True:
 
     # write to led array
     buf.render()
+
+    # play win sounds and pause game
+    if winner is not None:
+        for voice in voices:
+            voice.play(200)
+            time.sleep_ms(100)
+        time.sleep(1)
+        winner = None
 
     # wait for next frame
     end = time.ticks_ms()

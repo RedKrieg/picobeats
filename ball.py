@@ -38,9 +38,11 @@ class Ball:
         lc = self.lane_coordinate
         pos = self.position
         sp = buf.set_pixel
+        # render shifter
+        rs = buf.render_count % 6
         if spd == 0:
             for y in range(self.width):
-                sp(pos, lc+y, (255, 0, 0))
+                sp(pos, lc+y, (255 >> rs, 0, 0))
             return
         direction = -spd // abs(spd)
         for y in range(self.width):

@@ -10,14 +10,25 @@ class ScoreBoard:
         self.render_flash = deque((), width)
         
     def update(self, player):
+        rf = self.render_flash
         if player:
             self.score += 1
         else:
             self.score -= 1
-        self.render_flash.append(player)
-        if self.score == -1 or self.score == self.width-1:
-            # reset score for now
+        if self.score == -1:
+            winner = 0
+        elif self.score == self.width - 1:
+            winner = self.score
+        else:
+            winner = None
+        if winner is not None:
+            # reset score
             self.score = self.width//2 - 1
+            # flash screen on victory
+            for i in range(self.width):
+                rf.append(i)
+            return winner # let game engine handle the rest
+        rf.append(player)
 
     def render(self, buf):
         # prevent lookups inside loops

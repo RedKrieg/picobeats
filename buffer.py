@@ -10,6 +10,7 @@ class Buffer:
         self.width = width or picounicorn.get_width()
         self.height = height or picounicorn.get_height()
         self.buffer = []
+        self.render_count = 0
         # build buffer in memory
         for x in range(self.width):
             self.buffer.append([])
@@ -36,5 +37,6 @@ class Buffer:
         for x in range(self.width):
             for y in range(h):
                 sp(x, y, *buf[x][y])
+        self.render_count += 1
         # this stabilizes slowdowns due to all the memory thrashing we do with this buffering method
         gc.collect()
