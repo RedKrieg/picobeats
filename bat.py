@@ -17,7 +17,7 @@ class Bat:
         self.location_x = location_x
         self.location_y = location_y
         self.direction = 1 if location_x == 0 else -1
-        self.color = (128, 128, 128)
+        self.color = (63, 127, 63)
         self.holding = False
 
     def update(self):
