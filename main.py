@@ -27,7 +27,7 @@ lanes = [1, 4]
 
 balls = [
     ball.Ball(width, lanes[0], width=2),
-    ball.Ball(width, lanes[1], position=width - 1, width=2)
+    ball.Ball(width, lanes[1], position=width - 1, speed=-1, width=2)
     ]
 
 bats = [
