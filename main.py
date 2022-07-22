@@ -1,6 +1,7 @@
 import buffer
 import chirp
 import game
+import scroll
 import picounicorn
 import time
 
@@ -16,20 +17,22 @@ voices = [ chirp.Chirper(i+voice_pio_offset, i+voice_gpio_offset, voice_hz) for 
 # each player has a buttons tuple and a colors tuple
 buttons = ((picounicorn.BUTTON_A, picounicorn.BUTTON_B), (picounicorn.BUTTON_X, picounicorn.BUTTON_Y))
 colors = ((255, 0, 0), (0, 0, 255))
+color_names = ("Red", "Blue")
 
 width = picounicorn.get_width()
 height = picounicorn.get_height()
 
 # render to a buffer so the leds don't flicker
 buf = buffer.Buffer(width, height)
+s = scroll.Scroller(buf, framerate=15)
 
 # y coordinates of the lanes we use
 lanes = (1, 4)
 
 while True:
     g = game.Game(voices, buttons, lanes, buf, colors)
-    winner = g.play()
+    winner = 0 if g.play() else 1
     for voice in voices:
         voice.play(200)
-        time.sleep_ms(100)
-    time.sleep(1)
+        time.sleep_ms(50)
+    s.scroll(f"{color_names[winner]} Wins!!!", colors[winner])
