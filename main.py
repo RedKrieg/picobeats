@@ -2,6 +2,7 @@ import buffer
 import chirp
 import game
 import picounicorn
+import time
 
 picounicorn.init()
 
@@ -28,3 +29,7 @@ lanes = (1, 4)
 while True:
     g = game.Game(voices, buttons, lanes, buf, colors)
     winner = g.play()
+    for voice in voices:
+        voice.play(200)
+        time.sleep_ms(100)
+    time.sleep(1)
