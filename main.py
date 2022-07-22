@@ -1,84 +1,30 @@
-import ball
-import bat
 import buffer
 import chirp
-import scoreboard
+import game
 import picounicorn
-import time
-
-target_fps = 60
-
-ticks_per_frame = 1000 // target_fps # rough, but err faster than slower
 
 picounicorn.init()
 
 # we have 4 voices on pio 4-7 tied to gpio 2-5
-voices = [ chirp.Chirper(i+4, i+2, 96000) for i in range(4) ]
-buttons = [ picounicorn.BUTTON_A, picounicorn.BUTTON_B, picounicorn.BUTTON_X, picounicorn.BUTTON_Y ]
+voice_count = 4
+voice_hz = 96000
+voice_pio_offset = 4
+voice_gpio_offset = 2
+voices = [ chirp.Chirper(i+voice_pio_offset, i+voice_gpio_offset, voice_hz) for i in range(voice_count) ]
+
+# each player has a buttons tuple and a colors tuple
+buttons = ((picounicorn.BUTTON_A, picounicorn.BUTTON_B), (picounicorn.BUTTON_X, picounicorn.BUTTON_Y))
+colors = ((255, 0, 0), (0, 0, 255))
 
 width = picounicorn.get_width()
 height = picounicorn.get_height()
-
-color_red = (255, 0, 0)
-color_blue = (0, 0, 255)
 
 # render to a buffer so the leds don't flicker
 buf = buffer.Buffer(width, height)
 
 # y coordinates of the lanes we use
-lanes = [1, 4]
-
-balls = [
-    ball.Ball(width, lanes[0], width=2),
-    ball.Ball(width, lanes[1], position=width - 1, speed=-1, width=2)
-    ]
-
-bats = [
-    bat.Bat(buttons[0], balls[0], voices[0], 0, lanes[0], width=2, team_color=color_red),
-    bat.Bat(buttons[2], balls[0], voices[1], width - 1, lanes[0], width=2, team_color=color_blue),
-    bat.Bat(buttons[1], balls[1], voices[2], 0, lanes[1], width=2, team_color=color_red),
-    bat.Bat(buttons[3], balls[1], voices[3], width - 1, lanes[1], width=2, team_color=color_blue)
-    ]
-
-sb = scoreboard.ScoreBoard(0, width - 1, width, height)
-
-winner = None
+lanes = (1, 4)
 
 while True:
-    start = time.ticks_ms()
-
-    # update bat before ball to allow for hits
-    for bt in bats:
-        bt.update()
-    for bl in balls:
-        point=bl.update()
-        if point is not None:
-            winner = sb.update(point)
-            if winner is not None:
-                # debug, probably need to reset ball/bat states here
-                print(f"Player at {winner} wins.")
-
-    # start rendering
-    buf.clear()
-    sb.render(buf)
-    for bt in bats:
-        bt.render(buf)
-    for bl in balls:
-        bl.render(buf)
-
-    # write to led array
-    buf.render()
-
-    # play win sounds and pause game
-    if winner is not None:
-        for voice in voices:
-            voice.play(200)
-            time.sleep_ms(100)
-        time.sleep(1)
-        winner = None
-
-    # wait for next frame
-    end = time.ticks_ms()
-    wait_for = ticks_per_frame + time.ticks_diff(start, end)
-    print(f"Waiting for {wait_for:>3}ms")
-    time.sleep_ms(wait_for)
+    g = game.Game(voices, buttons, lanes, buf, colors)
+    winner = g.play()
