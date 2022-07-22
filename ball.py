@@ -5,6 +5,7 @@ class Ball:
         self.position = position
         self.speed = speed
         self.width = width
+        self.color = (255, 0, 255)
         # hack to get subposition correctly set at start
         if position == lane_size - 1:
             self._subposition = (lane_size << 3) - 1
@@ -15,15 +16,17 @@ class Ball:
         self._subposition += self.speed
         self.position = self._subposition >> 3
         # handle bounces
-        if self.position >= self.lane_size:
+        l = self.position < 0
+        r = self.position >= self.lane_size
+        if r:
             self.position = self.lane_size - 1
             self._subposition = (self.lane_size << 3) - 1
-            self.speed *= -1
-            return self.position
-        if self.position < 0:
+        if l:
             self.position = 0
             self._subposition = 0
+        if l or r:
             self.speed *= -1
+            self.color = tuple(reversed(self.color))
             return self.position
 
     def move(self, pos, speed=None):
@@ -38,13 +41,15 @@ class Ball:
         lc = self.lane_coordinate
         pos = self.position
         sp = buf.set_pixel
+        color = self.color
         # render shifter
         rs = buf.render_count % 6
         if spd == 0:
+            color = tuple(i >> rs for i in self.color)
             for y in range(self.width):
-                sp(pos, lc+y, (255 >> rs, 0, 0))
+                sp(pos, lc+y, color)
             return
         direction = -spd // abs(spd)
         for y in range(self.width):
             for i in range(3):
-                sp(pos + i*direction, lc+y, (255 >> i, 0, 0))
+                sp(pos + i*direction, lc+y, tuple(j>>i for j in color))

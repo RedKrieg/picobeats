@@ -1,7 +1,7 @@
 import picounicorn
 
 class Bat:
-    def __init__(self, button, ball, voice, location_x, location_y, max_len=6, width=1):
+    def __init__(self, button, ball, voice, location_x, location_y, max_len=6, width=1, color=(63, 127, 63), team_color=(255, 0, 255)):
         """
             [button] is a picounicorn button ID
             [ball] is an instance of ball.Ball
@@ -9,6 +9,8 @@ class Bat:
             [location_x] and [location_y] are screen coordinates of the first pixel
             [max_len] is the maximum length of the bat
             [width] is the width of the bat
+            [color] is the color of the bat
+            [team_color] is the color we set our ball to
         """
         self.max_len = max_len
         self.length = 0
@@ -19,7 +21,8 @@ class Bat:
         self.location_y = location_y
         self.width = width
         self.direction = 1 if location_x == 0 else -1
-        self.color = (63, 127, 63)
+        self.color = color
+        self.team_color = team_color
         self.holding = False
 
     def update(self):
@@ -37,6 +40,7 @@ class Bat:
             self.holding = self.ball.position == self.location_x + (self.length - 1) * self.direction
             # handle collision
             if self.holding:
+                self.ball.color = self.team_color
                 self.ball.speed = 0
                 return False
             # don't extend past max length
@@ -47,6 +51,7 @@ class Bat:
                 self.holding = self.ball.position == self.location_x + (self.length - 1) * self.direction
                 # handle collision
                 if self.holding:
+                    self.ball.color = self.team_color
                     self.ball.speed = 0
         else:
             if self.holding:

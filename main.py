@@ -19,6 +19,9 @@ buttons = [ picounicorn.BUTTON_A, picounicorn.BUTTON_B, picounicorn.BUTTON_X, pi
 width = picounicorn.get_width()
 height = picounicorn.get_height()
 
+color_red = (255, 0, 0)
+color_blue = (0, 0, 255)
+
 # render to a buffer so the leds don't flicker
 buf = buffer.Buffer(width, height)
 
@@ -31,10 +34,10 @@ balls = [
     ]
 
 bats = [
-    bat.Bat(buttons[0], balls[0], voices[0], 0, lanes[0], width=2),
-    bat.Bat(buttons[2], balls[0], voices[1], width - 1, lanes[0], width=2),
-    bat.Bat(buttons[1], balls[1], voices[2], 0, lanes[1], width=2),
-    bat.Bat(buttons[3], balls[1], voices[3], width - 1, lanes[1], width=2)
+    bat.Bat(buttons[0], balls[0], voices[0], 0, lanes[0], width=2, team_color=color_red),
+    bat.Bat(buttons[2], balls[0], voices[1], width - 1, lanes[0], width=2, team_color=color_blue),
+    bat.Bat(buttons[1], balls[1], voices[2], 0, lanes[1], width=2, team_color=color_red),
+    bat.Bat(buttons[3], balls[1], voices[3], width - 1, lanes[1], width=2, team_color=color_blue)
     ]
 
 sb = scoreboard.ScoreBoard(0, width - 1, width, height)
