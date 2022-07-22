@@ -5,7 +5,7 @@ class Ball:
         self.position = position
         self.speed = speed
         self.width = width
-        self.color = (255, 0, 255)
+        self.color = (127, 255, 127)
         # hack to get subposition correctly set at start
         if position == lane_size - 1:
             self._subposition = (lane_size << 3) - 1
