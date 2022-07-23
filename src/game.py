@@ -1,12 +1,13 @@
 import ball
 import bat
+import gc
 import micropython
 import picounicorn
 import scoreboard
 import time
 
 class Game:
-    def __init__(self, voices, buttons, lanes, buf, colors, framerate=60):
+    def __init__(self, voices, buttons, lanes, buf, colors, framerate=60, debug=False):
         self.balls = []
         self.bats = []
         for i, l in enumerate(lanes):
@@ -29,6 +30,7 @@ class Game:
         self.buf = buf
         self.framerate = framerate
         self.ticks_per_frame = 1000 // framerate # rough, but err faster than slower
+        self.debug = debug
 
     @micropython.native
     def play(self):
@@ -55,10 +57,16 @@ class Game:
             # write to led array
             buf.render()
 
+            if self.debug:
+                mu = gc.mem_alloc()
+                mf = gc.mem_free()
+                print(f"Mem Used: {mu} Mem Free: {mf}")
+
             # wait for next frame
             end = time.ticks_ms()
             wait_for = self.ticks_per_frame + time.ticks_diff(start, end)
-            print(f"Waiting for {wait_for:>3} ms")
+            if self.debug:
+                print(f"Waiting for {wait_for:>3} ms")
             time.sleep_ms(wait_for)
 
         return winner

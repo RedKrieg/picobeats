@@ -7,7 +7,7 @@ font = bdfparser.Font('5x7.bdf')
 font_data = {}
 
 for glyph in font.iterglyphs(r=[(0x0, 0x7F)]):
-    font_data[glyph.cp()] = tuple(tuple(int(x)!=0 for x in y) for y in glyph.draw().bindata)
+    font_data[glyph.cp()] = tuple(tuple(int(x) for x in y) for y in glyph.draw().bindata)
 
 font_tuples = tuple(font_data[i] if i in font_data else () for i in range(128))
 
