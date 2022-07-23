@@ -1,5 +1,6 @@
 import ball
 import bat
+import micropython
 import picounicorn
 import scoreboard
 import time
@@ -28,7 +29,8 @@ class Game:
         self.buf = buf
         self.framerate = framerate
         self.ticks_per_frame = 1000 // framerate # rough, but err faster than slower
-        
+
+    @micropython.native
     def play(self):
         winner = None
         buf = self.buf

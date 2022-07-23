@@ -1,3 +1,4 @@
+import micropython
 from collections import deque
 
 class ScoreBoard:
@@ -8,7 +9,8 @@ class ScoreBoard:
         self.thickness = thickness
         self.score = width//2 - 1
         self.render_flash = deque((), width)
-        
+
+    @micropython.native
     def update(self, player):
         rf = self.render_flash
         if player:
@@ -30,6 +32,7 @@ class ScoreBoard:
             return winner # let game engine handle the rest
         rf.append(player)
 
+    @micropython.native
     def render(self, buf):
         # prevent lookups inside loops
         rf = self.render_flash

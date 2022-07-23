@@ -1,3 +1,5 @@
+import micropython
+
 class Ball:
     def __init__(self, lane_size, lane_coordinate, position=0, speed=1, width=1):
         self.lane_size = lane_size
@@ -35,6 +37,7 @@ class Ball:
         if speed is not None:
             self.speed = speed
 
+    @micropython.native
     def render(self, buf):
         # reduce lookups inside loops
         spd = self.speed

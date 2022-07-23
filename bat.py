@@ -1,3 +1,4 @@
+import micropython
 import picounicorn
 
 class Bat:
@@ -64,6 +65,7 @@ class Bat:
                 self.length -= 1
         return False
 
+    @micropython.native
     def render(self, buf):
         """Render the bat"""
         # reduce lookups inside loops

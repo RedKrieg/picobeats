@@ -1,4 +1,5 @@
 import gc
+import micropython
 import picounicorn
 from font import font
 
@@ -17,7 +18,8 @@ class Buffer:
             self.buffer.append([])
             for y in range(self.height):
                 self.buffer[x].append((0, 0, 0))
-        
+
+    @micropython.native
     def clear(self):
         # save a millisecond
         buf = self.buffer
@@ -26,6 +28,7 @@ class Buffer:
             for y in range(h):
                 buf[x][y] = (0, 0, 0)
 
+    @micropython.native
     def blit(self, bitmap, color, x_off=0, y_off=0):
         sp = self.set_pixel
         for y, row in enumerate(bitmap):
@@ -33,13 +36,16 @@ class Buffer:
                 if bit:
                     sp(x+x_off, y+y_off, color)
 
+    @micropython.native
     def draw_char(self, char, color, x_off=0, y_off=0):
         self.blit(font[ord(char)], color, x_off, y_off)
 
+    @micropython.native
     def set_pixel(self, x, y, color):
         if x >= 0 and x < self.width and y >= 0 and y < self.height:
             self.buffer[x][y] = color
 
+    @micropython.native
     def render(self):
         # save us having to look up self.* in the tight loop here (saves 1ms/frame)
         buf = self.buffer
