@@ -15,8 +15,7 @@ class Ball:
             self._subposition = position << 3
 
     def update(self):
-        self._subposition += self.speed
-        self.position = self._subposition >> 3
+        self.move_by(self.speed)
         # handle bounces
         l = self.position < 0
         r = self.position >= self.lane_size
@@ -31,11 +30,9 @@ class Ball:
             self.color = tuple(reversed(self.color))
             return self.position
 
-    def move(self, pos, speed=None):
-        self.position = pos
-        self._subposition = pos << 3
-        if speed is not None:
-            self.speed = speed
+    def move_by(self, value):
+        self._subposition += value
+        self.position = self._subposition >> 3
 
     @micropython.native
     def render(self, buf):

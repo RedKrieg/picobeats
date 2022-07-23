@@ -33,9 +33,14 @@ class Bat:
             Returns True when a ball has been launched
         """
         if picounicorn.is_pressed(self.button):
-            # short circuit when we're already holding a ball
+            # already holding a ball
             if self.holding:
-                # only act on release
+                # extend the bat over time when held
+                if self.length < self.max_len:
+                    old_pos = self.ball.position
+                    self.ball.move_by(self.direction)
+                    if old_pos != self.ball.position:
+                        self.length += 1
                 return False
             # check for collision from ball movement last frame
             self.holding = self.ball.position == self.location_x + (self.length - 1) * self.direction
@@ -47,7 +52,7 @@ class Bat:
             # don't extend past max length
             if self.length < self.max_len:
                 # extend
-                self.length +=1
+                self.length += 1
                 # check for collision after extending
                 self.holding = self.ball.position == self.location_x + (self.length - 1) * self.direction
                 # handle collision
