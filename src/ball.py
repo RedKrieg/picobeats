@@ -42,10 +42,10 @@ class Ball:
         pos = self.position
         sp = buf.set_pixel
         color = self.color
-        # render shifter
-        rs = buf.render_count % 6
+        # when speed is 0, shift color by 2 bits every 4 frames
+        cs = ((buf.render_count >> 2 ) & 1) << 2
         if spd == 0:
-            color = tuple(i >> rs for i in self.color)
+            color = tuple(i >> cs for i in self.color)
             for y in range(self.width):
                 sp(pos, lc+y, color)
             return

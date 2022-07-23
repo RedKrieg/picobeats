@@ -35,4 +35,4 @@ while True:
     for voice in voices:
         voice.play(200)
         time.sleep_ms(50)
-    s.scroll(f"{color_names[winner]} Wins!!!", colors[winner])
+    s.scroll(f"{color_names[winner]} Wins!", colors[winner])

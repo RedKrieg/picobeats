@@ -9,6 +9,7 @@ class ScoreBoard:
         self.thickness = thickness
         self.score = width//2 - 1
         self.render_flash = deque((), width)
+        self.near_win = False
 
     @micropython.native
     def update(self, player):
@@ -23,6 +24,8 @@ class ScoreBoard:
             winner = self.score
         else:
             winner = None
+        # used in renderer later to flash score bar
+        self.near_win = self.score == 0 or self.score == self.width - 2
         if winner is not None:
             # reset score
             self.score = self.width//2 - 1
@@ -34,13 +37,16 @@ class ScoreBoard:
 
     @micropython.native
     def render(self, buf):
-        # prevent lookups inside loops
+        # prevent name lookups inside loops for performance
         rf = self.render_flash
         sc = self.score
         sp = buf.set_pixel
         h = self.height
         t = self.thickness
         col = (63, 63, 63)
+        # flash scoreboard high and low eight frames at a time
+        if self.near_win and (buf.render_count >> 3) % 2:
+            col = (32, 32, 32)
         fcol = (255, 255, 255)
         for i in range(t):
             for y in range(h):
