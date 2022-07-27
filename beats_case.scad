@@ -56,13 +56,13 @@ module package() {
         //pico pcb
         translate([(unicorn_length-header_length)/2, (unicorn_width-pico_width)/2, pico_pin_height-0.4]) cube([header_length, pico_width, unicorn_height]);
         //usb header
-        translate([(unicorn_length-header_length)/2-usb_header_pico_offset,(unicorn_width-usb_header_width)/2,pico_pin_height-usb_header_height+0.6]) cube([usb_header_length, usb_header_width, usb_header_height]);
+        translate([(unicorn_length-header_length)/2-usb_header_pico_offset,(unicorn_width-usb_header_width)/2,pico_pin_height-usb_header_height+0.4]) cube([usb_header_length, usb_header_width, usb_header_height]);
         //usb plug
         translate([-wall_thickness*2, (unicorn_width-usb_plug_width)/2, (usb_plug_height-usb_header_height)/2-pico_pin_height-usb_header_height+0.4]) cube([(unicorn_length-header_length)/2-usb_header_pico_offset+wall_thickness*2, usb_plug_width, usb_plug_height]);
         //bootsel
-        translate([(unicorn_length-header_length)/2-usb_header_pico_offset+5, (unicorn_width-pico_width)/2+bootsel_pico_width_offset, pico_pin_height-bootsel_height+0.6]) cube([bootsel_length, bootsel_width, bootsel_height]);
+        translate([(unicorn_length-header_length)/2-usb_header_pico_offset+5, (unicorn_width-pico_width)/2+bootsel_pico_width_offset, pico_pin_height-bootsel_height+0.4]) cube([bootsel_length, bootsel_width, bootsel_height]);
         //debug header for pico H
-        translate([unicorn_length - (unicorn_length-header_length)/2 - debug_header_length, (unicorn_width-debug_header_width)/2, pico_pin_height-0.4-debug_header_height]) cube([debug_header_length, debug_header_width, debug_header_height]);
+        translate([unicorn_length - (unicorn_length-header_length)/2 - debug_header_length, (unicorn_width-debug_header_width)/2, pico_pin_height-0.6-debug_header_height]) cube([debug_header_length, debug_header_width, debug_header_height]);
     }
 }
 
