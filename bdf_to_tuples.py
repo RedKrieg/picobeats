@@ -11,7 +11,7 @@ for glyph in font.iterglyphs(r=[(0x0, 0x7F)]):
 
 font_tuples = tuple(font_data[i] if i in font_data else () for i in range(128))
 
-with open("font.py", 'w') as f:
+with open("src/font.py", 'w') as f:
     print("from micropython import const", file=f)
     print("font=const((", file=f)
     for tup in font_tuples:
