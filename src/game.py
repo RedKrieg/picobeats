@@ -57,10 +57,10 @@ class Game:
             # write to led array
             buf.render()
 
-            if self.debug:
-                mu = gc.mem_alloc()
-                mf = gc.mem_free()
-                print(f"Mem Used: {mu} Mem Free: {mf}")
+            #if self.debug:
+            #    mu = gc.mem_alloc()
+            #    mf = gc.mem_free()
+            #    print(f"Mem Used: {mu} Mem Free: {mf}")
 
             # wait for next frame
             end = time.ticks_ms()

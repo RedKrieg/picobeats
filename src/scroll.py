@@ -24,5 +24,4 @@ class Scroller:
             # wait for next frame
             end = time.ticks_ms()
             wait_for = self.ticks_per_frame + time.ticks_diff(start, end)
-            print(f"Waiting for {wait_for:>3} ms")
             time.sleep_ms(wait_for)
