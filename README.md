@@ -18,6 +18,11 @@ Installation
 
 Game files are in the src/ directory.  Make sure you have the latest Pimoroni [release](https://github.com/pimoroni/pimoroni-pico/releases/latest) of micropython for your board, then put all of the files in the src/ directory on to the device's root filesystem using one of [Thonny](https://thonny.org/), [mpremote](https://docs.micropython.org/en/latest/reference/mpremote.html), [ampy](https://github.com/scientifichackers/ampy), [mpfshell](https://github.com/wendlers/mpfshell), or another tool of your choosing.
 
+Case
+----
+
+Files for a very basic case (no room for sound hardware) are included.  The [OpenSCAD](https://openscad.org/) file has a lot of "fudge" in the positioning where I've added a few tenths of a millimeter here and there.  I should refactor and clean that up but I have not yet been motivated enough.  The STL has been printed in PLA and tested with both a Pico W (with standard soldered headers) and a Pico H (with included debug header).  I do not have a Pico WH for reference because they have not been released at the time of writing.
+
 Sound
 ----
 
