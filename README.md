@@ -3,6 +3,8 @@ Picobeats
 
 This is a [SEGA Flashbeats](https://www.arcade-museum.com/game_detail.php?game_id=17932) inspired minigame for the [Raspberry Pi Pico](https://www.raspberrypi.com/products/raspberry-pi-pico/), [Pimoroni Pico Unicorn Pack](https://pimoroni.com/picounicorn), and optionally something to make some sound.
 
+[Gameplay Preview](https://user-images.githubusercontent.com/1106212/181414360-2c72404f-b522-4de5-a640-f7bfdf5f9dff.webm)
+
 Requirements
 ----
 
