@@ -30,6 +30,8 @@ s = scroll.Scroller(buf, framerate=30)
 # y coordinates of the lanes we use
 lanes = (1, 4)
 
+s.scroll("PicoBeats", (64, 128, 64))
+
 while True:
     g = game.Game(voices, buttons, lanes, buf, colors, debug=False)
     winner = 0 if g.play() else 1
